@@ -62,9 +62,10 @@ public class PlanService {
             }
         }
         for (SpendingPlan spendingPlan : spendingPlanList) {
-            if (!identifiers.contains(spendingPlan.getId())){
+            if (!identifiers.contains(spendingPlan.getId())) {
                 categories.add(new Category(spendingPlan.getId(), spendingPlan.getNameEng(),
                         0, spendingPlan.getPlan(), Status.OK));
+                plannedSum = plannedSum + spendingPlan.getPlan();
             }
         }
         categories.sort(Comparator.comparingInt(Category::getId));
