@@ -140,14 +140,16 @@ public class PlanRepository {
 
     public List<Transaction> getCategoryDetailing(int account, int category, int month, int year) {
         try {
-            String sql = "select t2.tstamp, t2.saldo, c3.\"name\" \n" +
-                    "from \"transaction_big\" t2, counterparties c3, categories c2 \n" +
+            String sql = "select t2.tstamp, t2.rahamaara, c3.\"name\" \n" +
+                    "from \"transaction_big\" t2 \n" +
+                    "left join counterparties c3\n" +
+                    "on t2.counterparty_account_id = c3.id \n" +
+                    "join categories c2 \n" +
+                    "on t2.category = c2.name_fin\n" +
                     "where t2.tilinro = ?\n" +
                     "and to_char(t2.tstamp, 'YYYY') = ?\n" +
                     "and to_char(t2.tstamp, 'MM') = ?\n" +
-                    "and c2.id = ?\n" +
-                    "and t2.counterparty_account_id = c3.id \n" +
-                    "and t2.category = c2.name_fin";
+                    "and c2.id = ?";
             Object[] param = new Object[]{account, Integer.toString(year), String.format("%02d", month), category};
             return jdbcTemplate.query(sql, param,
                     BeanPropertyRowMapper.newInstance(Transaction.class));

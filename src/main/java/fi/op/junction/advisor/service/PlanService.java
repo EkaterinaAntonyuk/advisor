@@ -37,6 +37,7 @@ public class PlanService {
     private SpendingPlanResponse getSpendingPlanResponse(List<SpendingPlan> spendingPlanList,
                                                          List<CategoryTransactions> categoryTransactionsList) {
         List<Category> categories = new ArrayList<>();
+        Set<Integer> identifiers = new HashSet<>();
         double spentSum = 0;
         double plannedSum = 0;
         for (SpendingPlan spendingPlan : spendingPlanList) {
@@ -55,8 +56,15 @@ public class PlanService {
                         }
                         spentSum = spentSum + categoryTransactions.getSum();
                         plannedSum = plannedSum + spendingPlan.getPlan();
+                        identifiers.add(spendingPlan.getId());
                     }
                 }
+            }
+        }
+        for (SpendingPlan spendingPlan : spendingPlanList) {
+            if (!identifiers.contains(spendingPlan.getId())){
+                categories.add(new Category(spendingPlan.getId(), spendingPlan.getNameEng(),
+                        0, spendingPlan.getPlan(), Status.OK));
             }
         }
         categories.sort(Comparator.comparingInt(Category::getId));
@@ -94,7 +102,7 @@ public class PlanService {
                     if (category.getNameFin().equals(currUserAverageSpending.getCategory()) &&
                             category.getNameFin().equals(allUsersAverageSpending.getCategory())) {
                         suggestionList.add(new Suggestion(category.getId(), category.getNameEng(),
-                                - currUserAverageSpending.getMonthSum(), - allUsersAverageSpending.getMonthSum()));
+                                -currUserAverageSpending.getMonthSum(), -allUsersAverageSpending.getMonthSum()));
                     }
                 }
             }

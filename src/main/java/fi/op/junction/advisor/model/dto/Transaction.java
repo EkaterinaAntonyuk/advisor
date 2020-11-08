@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 public class Transaction {
     private Timestamp tstamp;
-    private double saldo;
+    private double rahamaara;
     private String name;
 
     public Timestamp getTstamp() {
@@ -15,12 +15,12 @@ public class Transaction {
         this.tstamp = tstamp;
     }
 
-    public double getSaldo() {
-        return saldo;
+    public double getRahamaara() {
+        return rahamaara;
     }
 
-    public void setSaldo(double saldo) {
-        this.saldo = saldo;
+    public void setRahamaara(double rahamaara) {
+        this.rahamaara = rahamaara;
     }
 
     public String getName() {
